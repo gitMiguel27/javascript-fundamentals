@@ -8,7 +8,7 @@ const CourseInfo = {
 const AssignmentGroup = {
     id: 12345,
     name: "Fundamentals of JavaScript",
-    course_id: 452,
+    course_id: 451,
     group_weight: 25,
     assignments: [
         {
@@ -73,18 +73,36 @@ const LearnerSubmissions = [
         submitted_at: "2023-03-07",
         score: 140
         }
-    }
+    },
 ];
+
+function getLearnersArray(submissions) {
+    let learnersArray = [];
+    for (const obj in submissions ) {
+        if (learnersArray.includes(submissions[obj].learner_id)) {
+            continue;
+        } else {
+            learnersArray.push(submissions[obj].learner_id);
+        };
+    };
+    for (let element in learnersArray) {
+        learnersArray[element] = { id: learnersArray[element] };
+    }
+    return learnersArray;
+};
 
 function getLearnerData(course, ag, submissions) {
 // here, we would process this data to achieve the desired result.
     try {
+        learnersArray = getLearnersArray(submissions);
+        console.log(learnersArray);
+
         if (ag.course_id === course.id) {
             for (const obj in submissions) {
                 console.log(submissions[obj]);
             };
         } else {
-            throw new TypeError("Assignment Group does not belong to this course!");
+            throw new TypeError("Assignment group does not belong to this course!");
         }
     } catch (error) {
         console.error(error);
