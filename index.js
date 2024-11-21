@@ -96,27 +96,48 @@ function getLearnersArray(submissions) {
         };
     };
     for (let element in learnersArray) {
-        learnersArray[element] = { id: learnersArray[element] };
+        learnersArray[element] = { id: learnersArray[element], avg: 0 };
     }
     return learnersArray;
 };
 
 function getLearnerData(course, ag, submissions) {
 // here, we would process this data to achieve the desired result.
+    let currentLearner;
+    let currentAssignment;
     try {
         learnersArray = getLearnersArray(submissions);
         console.log(learnersArray);
 
         if (ag.course_id === course.id) {
-            for (const submission in submissions) {
-                console.log(submissions[submission]);
+            for (const obj in submissions) {
+                // console.log(submissions[obj]);
                 try {
-                    switch (submissions[submission].assignment_id) {
+                    switch (submissions[obj].assignment_id) {
                         case 1 :
-                            console.log("This is for assignment 1");
+                            currentAssignment = ag.assignments.find((element) => element.id === submissions[obj].assignment_id);
+                            currentLearner = learnersArray.find((element) => element.id === submissions[obj].learner_id);
+                            if (submissions[obj].submission.submitted_at > currentAssignment.due_at) {
+                                
+                                currentLearner.avg += (submissions[obj].submission.score - 10);
+                                console.log("This assignment was submitted late!");
+                            } else {
+                                currentLearner.avg += submissions[obj].submission.score;
+                            };
+
+                            console.log(currentLearner);
                             break;
                         case 2 :
-                            console.log("This is for assignment 2");
+                            currentAssignment = ag.assignments.find((element) => element.id === submissions[obj].assignment_id);
+                            currentLearner = learnersArray.find((element) => element.id === submissions[obj].learner_id);
+                            if (submissions[obj].submission.submitted_at > currentAssignment.due_at) {
+                                console.log("This assignment was submitted late!");
+                                currentLearner.avg += (submissions[obj].submission.score - 10);
+                            } else {
+                                currentLearner.avg += submissions[obj].submission.score;
+                            };
+
+                            console.log(currentLearner);
                             break;
                         case 3 :
                             throw new TypeError("This assignment is not yet due!");
