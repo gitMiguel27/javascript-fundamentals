@@ -1,3 +1,13 @@
+// Getting today's date:
+const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+let currentDate = `${year}-${month}-${day}`;
+console.log(currentDate);
+
 // The provided course information.
 const CourseInfo = {
     id: 451,
@@ -98,8 +108,22 @@ function getLearnerData(course, ag, submissions) {
         console.log(learnersArray);
 
         if (ag.course_id === course.id) {
-            for (const obj in submissions) {
-                console.log(submissions[obj]);
+            for (const submission in submissions) {
+                console.log(submissions[submission]);
+                try {
+                    switch (submissions[submission].assignment_id) {
+                        case 1 :
+                            console.log("This is for assignment 1");
+                            break;
+                        case 2 :
+                            console.log("This is for assignment 2");
+                            break;
+                        case 3 :
+                            throw new TypeError("This assignment is not yet due!");
+                    };
+                } catch (error) {
+                    console.log(error);
+                };
             };
         } else {
             throw new TypeError("Assignment group does not belong to this course!");
